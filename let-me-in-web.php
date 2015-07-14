@@ -11,8 +11,9 @@ $database = new Ecodev\Database('localhost', 'root', 'root');
 $database->connect('authentificate');
 $username= $_POST['username'];
 $password= $_POST['passwd'];
-$user = $database->selectOne('SELECT * FROM user where username = "' . $username . '" AND passwd = "' . $password.'"');
-if (isset($user) && $user['username']==$username && $user['passwd']==$password ) {
+$hachedPassword = md5($password);
+$user = $database->selectOne('SELECT * FROM user where username = "' . $username . '" AND passwd = "' . $hachedPassword.'"LIMIT 1 ');
+if (!empty($user)){
 	Header("Location: succes.html");
 	exit();
 }
